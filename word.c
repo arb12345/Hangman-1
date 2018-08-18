@@ -2,16 +2,35 @@
 #include<stdlib.h>
 #include<string.h>
 #include<windows.h>
+#include<time.h>
+#include<ctype.h>
 int main()
 {
 	void hangman(int);
-	int i,chance=7,check=0,n=60;
-	char word[20]="university",guess[20],w,displayguess[20];
+	int i,chance=7,check=0,n=60,random_num=0,j=0;
+	char word[80],guess[80],w,displayguess[80],buffer[80];
+	srand(time(0));
+	random_num = (rand() %11+0);
+	FILE *fptr;
+	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);         
+    }  
+    while (fgets(buffer, sizeof(buffer), fptr)) 
+    {
+		if(j==random_num)
+		{
+			strcpy(word, buffer);
+		}
+		j++;
+			
+    }
+    fclose(fptr);
 	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n");
-	Sleep(1000);
-	
+	Sleep(1000);	
 	printf("\n\n\n\n\n\n\n\t\t\t\tLoading...\n\n\t");
 	while(n>=0)
 	{
@@ -23,29 +42,44 @@ int main()
     Sleep(1000);
     printf("\n");
     system("cls");
-	for(i=0;i<=strlen(word);i++)
+    strupr(word);
+	for(i=0;i<=strlen(word)-1;i++)
 	{
-		if(i%2==0)
+		if(i%3==0)
 		{
 			guess[i]=word[i];
 			displayguess[i]=word[i];
 		}
 		else
+		if(i!=strlen(word)-1)
 		{
 			guess[i]='_';
 			displayguess[i]='_';
 		}
+		else
+		{
+			guess[i]=word[i];
+			displayguess[i]=word[i];
+		}
+		
 	}
+	guess[i]='\0';
+	displayguess[i]='\0';
+	/*
+	printf("\n%s%d\n",guess,strlen(guess)-1);
+	printf("\n%s%d\n",word,strlen(word)-1);
+	*/
 	while(n)
 	{
 		printf("\n\n\n\t\t\tGuess the word: %s\n",displayguess);
 		printf("Chances:%d\n",chance);
 		printf("\n");
 		hangman(chance);
-		printf("\n%s\n\n\t\t\t",guess);
+		printf("\n\n\t\t\t\t%s\n",guess);
 		check=0;
 		printf("\nEnter a letter:");
 		scanf(" %c",&w);
+		w=toupper(w);
 		for(i=0;i<=strlen(word)-1;i++)
 		{
 			if(word[i]==w)
@@ -74,8 +108,7 @@ int main()
 	Sleep(900);
 	system("cls");
     }
-	return 0;
-	
+	return 0;	
 }
 
 void hangman(int c)
