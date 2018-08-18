@@ -7,26 +7,12 @@
 int main()
 {
 	void hangman(int);
-	int i,chance=7,check=0,n=60,random_num=0,j=0;
-	char word[80],guess[80],w,displayguess[80],buffer[80];
+	char* random_word();
+	int i,chance=7,check=0,n=60;
+	char word[80],guess[80],w,displayguess[80];
 	srand(time(0));
-	random_num = (rand() %11+0);
-	FILE *fptr;
-	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
-    {
-        printf("Error! opening file");
-        exit(1);         
-    }  
-    while (fgets(buffer, sizeof(buffer), fptr)) 
-    {
-		if(j==random_num)
-		{
-			strcpy(word, buffer);
-		}
-		j++;
-			
-    }
-    fclose(fptr);
+	//printf("main-%s",random_word());
+	strcpy(word,random_word());
 	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n");
@@ -65,10 +51,6 @@ int main()
 	}
 	guess[i]='\0';
 	displayguess[i]='\0';
-	/*
-	printf("\n%s%d\n",guess,strlen(guess)-1);
-	printf("\n%s%d\n",word,strlen(word)-1);
-	*/
 	while(n)
 	{
 		printf("\n\n\n\t\t\tGuess the word: %s\n",displayguess);
@@ -89,8 +71,36 @@ int main()
 			if (strcmp(word,guess) == 0)
 			{
 				printf("\nyou won\n");
-				n=1;
-				break;			
+				//n=1;
+				//break;
+				if(chance!=0)
+				{
+					strcpy(word,random_word());
+					
+			/////////////////////////////////////
+					for(i=0;i<=strlen(word)-1;i++)
+					{
+						if(i%3==0)
+						{
+							guess[i]=word[i];
+							displayguess[i]=word[i];
+						}
+						else
+						if(i!=strlen(word)-1)
+						{
+							guess[i]='_';
+							displayguess[i]='_';
+						}
+						else
+						{
+							guess[i]=word[i];
+							displayguess[i]=word[i];
+						}
+					}
+				guess[i]='\0';
+				displayguess[i]='\0';
+	       ///////////////////////////////				
+				}		
 			}
 			}
 		}
@@ -98,7 +108,8 @@ int main()
 		{
 			chance=chance-1;
 			printf("\nWRONG\n");
-			if(chance==0)				{
+			if(chance==0)				
+			{
 				printf("\nLast chance! Game over!!\n\n\n");
 				n=1;
 				break;
@@ -182,4 +193,29 @@ void hangman(int c)
     
 		
 }
+}
+
+char* random_word()
+{
+	int j=0,random_num=0;
+	char buffer[50],word[50];
+	random_num = (rand() %11+0);
+	FILE *fptr;
+	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);         
+    }  
+    while (fgets(buffer, sizeof(buffer), fptr)) 
+    {
+		if(j==random_num)
+		{
+			strcpy(word, buffer);
+		}
+		j++;
+			
+    }
+    fclose(fptr);
+    return word;
+	
 }
