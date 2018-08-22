@@ -8,7 +8,7 @@ int main()
 {
 	void hangman(int);
 	char* random_word();
-	int i,chance=7,check=0,n=60;
+	int i,chance=7,check=0,n=60,score=0,level=1;
 	char word[80],guess[80],w,displayguess[80];
 	srand(time(0));
 	//printf("main-%s",random_word());
@@ -53,8 +53,9 @@ int main()
 	displayguess[i]='\0';
 	while(n)
 	{
-		printf("\n\n\n\t\t\tGuess the word: %s\n",displayguess);
-		printf("Chances:%d\n",chance);
+		printf("\n\n\n\t\t\tGuess the word: %s\n\n",displayguess);
+		printf("\t\t\t\tLevel %d\n\n",level);
+		printf("Chances:%d\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
 		hangman(chance);
 		printf("\n\n\t\t\t\t%s\n",guess);
@@ -70,13 +71,14 @@ int main()
 			    check=1;
 			if (strcmp(word,guess) == 0)
 			{
-				printf("\nyou won\n");
+				printf("\nNext Level\n");
+				score=score+5;
+				level++;
 				//n=1;
 				//break;
 				if(chance!=0)
 				{
-					strcpy(word,random_word());
-					
+					strcpy(word,random_word());					
 			/////////////////////////////////////
 					for(i=0;i<=strlen(word)-1;i++)
 					{
@@ -108,9 +110,12 @@ int main()
 		{
 			chance=chance-1;
 			printf("\nWRONG\n");
+			score--;
 			if(chance==0)				
 			{
-				printf("\nLast chance! Game over!!\n\n\n");
+				system("cls");
+				printf("\n\n\n\n\n\t\t\tLast chance! Game over!!\n");
+				printf("\n\t\t\t\tYour Score:%d\n\n\n\n\n",score);
 				n=1;
 				break;
 			}
