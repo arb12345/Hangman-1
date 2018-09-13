@@ -282,7 +282,7 @@ void checkscore(int score)
 	}
 	printf("Enter your name:\n");
 	scanf("%s",name);
-	fprintf(fptr,"%s %d\n", name,score);
+	fprintf(fptr,"\t\t\t%s\t\t%d\n", name,score);
 	fclose(fptr);
 }
 
@@ -295,13 +295,14 @@ void displayscore()
     char c; 
     printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
-	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n\n\n\n\n\n");
+	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n\n\n\n");
     fptr = fopen("score.txt", "r"); 
     if (fptr == NULL) 
     { 
         printf("Cannot open file \n"); 
         exit(0); 
-    } 
+    }
+    printf("\t\t\tName\t\tScore\n"); 
     c = fgetc(fptr); 
     while (c != EOF) 
     { 
