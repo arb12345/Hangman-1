@@ -16,6 +16,7 @@ char* random_word();
 void clears();
 void sleeps(int);
 void checkscore(int);
+void displayscore();
 
 int main()
 {
@@ -52,7 +53,7 @@ int main()
 				}break;
 			case 2:
 				{
-					printf("HIGH SCORE");
+					displayscore();
 				}break;
 			case 3:
 				{
@@ -284,6 +285,35 @@ void checkscore(int score)
 	fprintf(fptr,"%s %d\n", name,score);
 	fclose(fptr);
 }
+
+
+void displayscore()
+{
+	int a;
+	clears();
+	FILE *fptr; 
+    char c; 
+    printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n\n\n\n\n\n");
+    fptr = fopen("score.txt", "r"); 
+    if (fptr == NULL) 
+    { 
+        printf("Cannot open file \n"); 
+        exit(0); 
+    } 
+    c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+        printf ("%c", c); 
+        c = fgetc(fptr); 
+    }  
+    printf("\n\n\n1. Main menu\n");
+    scanf("%d",&a);
+    clears();
+    fclose(fptr);
+}
+
 
 void clears()
 {
