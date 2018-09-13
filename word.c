@@ -1,33 +1,42 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<windows.h>
 #include<time.h>
 #include<ctype.h>
+
+#ifdef _WIN32
+#include<windows.h>
+#elif __linux__
+#include<unistd.h>
+#endif
 
 void hangman(int);
 void play();
 char* random_word();
+void clears();
+void sleeps(int);
+void checkscore(int);
 
 int main()
 {
 	int n=60,choice=0;
 	srand(time(0));
+	clears();
 	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n");
-	Sleep(1000);	
+	sleeps(1000);	
 	printf("\n\n\n\n\n\n\n\t\t\t\tLoading...\n\n\t");
 	while(n>=0)
 	{
 	printf("|");
-	Sleep(20);
+	sleeps(20);
 	n--;
     }
     printf(" 100%%\n\n\t");
-    Sleep(1000);
+    sleeps(1000);
     printf("\n");
-    system("cls");
+    clears();
     do
 	{ 
 		printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
@@ -47,7 +56,7 @@ int main()
 				}break;
 			case 3:
 				{
-					system("cls");
+					clears();
 					exit(1);
 				}break;
 		} 
@@ -60,9 +69,9 @@ void play()
 {
 	int i,chance=7,check=0,n=60,score=0,level=1;
 	char word[80],guess[80],w,displayguess[80];
-	system("cls");
+	clears();
 	strcpy(word,random_word());
-    strupr(word);
+    //strupr(word);
 	for(i=0;i<=strlen(word)-1;i++)
 	{
 		if(i%3==0)
@@ -71,7 +80,7 @@ void play()
 			displayguess[i]=word[i];
 		}
 		else
-		if(i!=strlen(word)-1)
+		if(i<strlen(word)-2)
 		{
 			guess[i]='_';
 			displayguess[i]='_';
@@ -122,7 +131,7 @@ void play()
 							displayguess[i]=word[i];
 						}
 						else
-						if(i!=strlen(word)-1)
+						if(i<strlen(word)-2)
 						{
 							guess[i]='_';
 							displayguess[i]='_';
@@ -147,18 +156,19 @@ void play()
 			score--;
 			if(chance==0)				
 			{
-				system("cls");
+				clears();
 				printf("\n\n\n\n\n\t\t\tLast chance! Game over!!\n");
 				printf("\n\t\t\t\tYour Score:%d\n\n\n\n\n",score);
-				Sleep(3000);
-				system("cls");
+				checkscore(score);
+				sleeps(2000);
+				clears();
 				n=1;
 				break;
 			}
 		}
 	n--;
-	Sleep(900);
-	system("cls");
+	sleeps(900);
+	clears();
     }
 }
 
@@ -236,7 +246,7 @@ void hangman(int c)
 char* random_word()
 {
 	int j=0,random_num=0;
-	char buffer[50],word[50];
+	char buffer[50],buffer1[50];
 	random_num = (rand() %11+0);
 	FILE *fptr;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
@@ -248,12 +258,48 @@ char* random_word()
     {
 		if(j==random_num)
 		{
-			strcpy(word, buffer);
+			strcpy(buffer1, buffer);
+			
 		}
 		j++;
 			
     }
+char *word=buffer1;
     fclose(fptr);
     return word;
 	
 }
+void checkscore(int score)
+{
+	char name[100];
+	FILE *fptr;
+	fptr = fopen("score.txt", "a+");
+	if(fptr == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+	printf("Enter your name:\n");
+	scanf("%s",name);
+	fprintf(fptr,"%s %d\n", name,score);
+	fclose(fptr);
+}
+
+void clears()
+{
+	#ifdef _WIN32
+	system("cls");
+	#elif __linux__
+	system("clear");
+	#endif
+}
+
+void sleeps(int x)
+{
+	#ifdef _WIN32
+	Sleep(x);
+	#elif __linux__
+	sleep(x*0.001);
+	#endif
+}
+
