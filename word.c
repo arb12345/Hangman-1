@@ -4,15 +4,15 @@
 #include<windows.h>
 #include<time.h>
 #include<ctype.h>
+
+void hangman(int);
+void play();
+char* random_word();
+
 int main()
 {
-	void hangman(int);
-	char* random_word();
-	int i,chance=7,check=0,n=60,score=0,level=1;
-	char word[80],guess[80],w,displayguess[80];
+	int n=60,choice=0;
 	srand(time(0));
-	//printf("main-%s",random_word());
-	strcpy(word,random_word());
 	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n");
@@ -28,6 +28,40 @@ int main()
     Sleep(1000);
     printf("\n");
     system("cls");
+    do
+	{ 
+		printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+		printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+		printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n"); 
+		printf("\n\n\n\n\n\n\t\t\t\t1. PLAY\n\n\t\t\t\t2. HIGH SCORE\n\n\t\t\t\t3. EXIT\n\n\t\t\t\t"); 
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:
+				{
+					play();
+				}break;
+			case 2:
+				{
+					printf("HIGH SCORE");
+				}break;
+			case 3:
+				{
+					system("cls");
+					exit(1);
+				}break;
+		} 
+	}
+	while(choice!=3);
+	return 0;	
+}
+
+void play()
+{
+	int i,chance=7,check=0,n=60,score=0,level=1;
+	char word[80],guess[80],w,displayguess[80];
+	system("cls");
+	strcpy(word,random_word());
     strupr(word);
 	for(i=0;i<=strlen(word)-1;i++)
 	{
@@ -116,6 +150,8 @@ int main()
 				system("cls");
 				printf("\n\n\n\n\n\t\t\tLast chance! Game over!!\n");
 				printf("\n\t\t\t\tYour Score:%d\n\n\n\n\n",score);
+				Sleep(3000);
+				system("cls");
 				n=1;
 				break;
 			}
@@ -124,7 +160,6 @@ int main()
 	Sleep(900);
 	system("cls");
     }
-	return 0;	
 }
 
 void hangman(int c)
@@ -194,9 +229,7 @@ void hangman(int c)
 		printf("\t\t\t\t|  / \\   \n");
 		printf("\t\t\t\t|       \n");
 		break;
-	}
-    
-		
+	}		
 }
 }
 
