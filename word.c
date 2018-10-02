@@ -18,6 +18,13 @@ void sleeps(int);
 void checkscore(int);
 void displayscore();
 
+struct g_score
+{
+	int hscore;
+	char name[20];
+};
+typedef struct g_score highscore;
+
 int main()
 {
 	int n=60,choice=0;
@@ -153,8 +160,10 @@ void play()
 		if(check==0)
 		{
 			chance=chance-1;
-			printf("\nWRONG\n");
+			//printf("\nWRONG\n");
 			score--;
+			if(score<0)
+			score=0;
 			if(chance==0)				
 			{
 				clears();
@@ -248,7 +257,7 @@ char* random_word()
 {
 	int j=0,random_num=0;
 	char buffer[50],buffer1[50];
-	random_num = (rand() %11+0);
+	random_num = (rand() %13+0);
 	FILE *fptr;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
     {
@@ -289,7 +298,8 @@ void checkscore(int score)
 
 void displayscore()
 {
-	int a;
+	highscore hs[11],temp;
+	int a,i=0,n=0,j;
 	clears();
 	FILE *fptr; 
     char c; 
@@ -306,9 +316,27 @@ void displayscore()
     c = fgetc(fptr); 
     while (c != EOF) 
     { 
-        printf ("%c", c); 
-        c = fgetc(fptr); 
-    }  
+       // printf ("%c", c);
+        fscanf(fptr,"\t\t\t%s\t\t%d",hs[i].name,&hs[i].hscore);
+        c = fgetc(fptr);
+        i++;
+        n++; 
+    }
+    n--;  
+    for(i=0;i<n-1;i++)      
+	{ 
+		for(j=0;j<n-1-i;j++) 
+		{
+			if(hs[j].hscore< hs[j+1].hscore)
+			{
+				temp=hs[j];       
+				hs[j]=hs[j+1];
+				hs[j+1]=temp;
+			}
+		} 
+	}  
+    for(i=0;i<=n-1;i++)  
+    printf("\t\t\t%s\t\t%d\n",hs[i].name,hs[i].hscore);
     printf("\n\n\n1. Main menu\n");
     scanf("%d",&a);
     clears();

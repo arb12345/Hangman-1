@@ -1,1 +1,9 @@
-			vvv		-7
+			ved1		33
+			vvv		18
+			abc		18
+			xyza		43
+			abcd		13
+			lll		4
+			pppp		0
+			mmm		3
+			ved		73
