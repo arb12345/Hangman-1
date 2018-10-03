@@ -78,7 +78,7 @@ void play()
 	int i,chance=7,check=0,n=60,score=0,level=1;
 	char word[80],guess[80],w,displayguess[80];
 	clears();
-	strcpy(word,random_word());
+	strcpy(word,random_word());							
     //strupr(word);
 	for(i=0;i<=strlen(word)-1;i++)
 	{
@@ -257,7 +257,7 @@ char* random_word()
 {
 	int j=0,random_num=0;
 	char buffer[50],buffer1[50];
-	random_num = (rand() %13+0);
+	random_num = (rand() %15+0);
 	FILE *fptr;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
     {
@@ -268,17 +268,15 @@ char* random_word()
     {
 		if(j==random_num)
 		{
-			strcpy(buffer1, buffer);
-			
+			strcpy(buffer1, buffer);		
 		}
-		j++;
-			
+		j++;			
     }
-char *word=buffer1;
+	char *word=buffer1;
     fclose(fptr);
-    return word;
-	
+    return word;	
 }
+
 void checkscore(int score)
 {
 	char name[100];
@@ -294,7 +292,6 @@ void checkscore(int score)
 	fprintf(fptr,"\t\t\t%s\t\t%d\n", name,score);
 	fclose(fptr);
 }
-
 
 void displayscore()
 {
@@ -342,7 +339,6 @@ void displayscore()
     clears();
     fclose(fptr);
 }
-
 
 void clears()
 {
