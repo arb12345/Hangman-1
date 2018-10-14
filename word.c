@@ -13,6 +13,7 @@
 void hangman(int);
 void play();
 char* random_word();
+char* hint();
 void clears();
 void sleeps(int);
 void checkscore(int);
@@ -24,6 +25,8 @@ struct g_score
 	char name[20];
 };
 typedef struct g_score highscore;
+
+int hint_line=0;
 
 int main()
 {
@@ -108,6 +111,7 @@ void play()
 		printf("\t\t\t\tLevel %d\n\n",level);
 		printf("Chances:%d\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
+		printf("\t\t\tHint:%s\n\n",hint());
 		hangman(chance);
 		printf("\n\n\t\t\t\t%s\n",guess);
 		check=0;
@@ -259,22 +263,51 @@ char* random_word()
 	char buffer[50],buffer1[50];
 	random_num = (rand() %15+0);
 	FILE *fptr;
+	hint_line=0;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);         
-    }  
+    } 
     while (fgets(buffer, sizeof(buffer), fptr)) 
     {
 		if(j==random_num)
 		{
-			strcpy(buffer1, buffer);		
+			strcpy(buffer1, buffer);
+			hint_line=j;
+			break;			
+		}
+		j++;			
+    } 
+	char *word=buffer1;
+    fclose(fptr);
+    //printf("%s",hint());
+    return word;	
+}
+
+char* hint()
+{
+	int j=0;
+	char hint[50],hint1[50];
+	FILE *fptr1;
+	if ((fptr1 = fopen("hints.txt", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);         
+    } 
+    while (fgets(hint, sizeof(hint), fptr1)) 
+    {
+		if(j==hint_line)
+		{
+			strcpy(hint1, hint);
+			break;			
 		}
 		j++;			
     }
-	char *word=buffer1;
-    fclose(fptr);
-    return word;	
+   // printf("%s",hint1);
+    char *hintword=hint1;
+    fclose(fptr1);
+    return hintword;
 }
 
 void checkscore(int score)
