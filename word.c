@@ -78,8 +78,8 @@ int main()
 
 void play()
 {
-	int i,chance=7,check=0,n=60,score=0,level=1;
-	char word[80],guess[80],w,displayguess[80];
+	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k;
+	char word[80],guess[80],w,displayguess[80],dis_letter[50];
 	clears();
 	strcpy(word,random_word());							
     //strupr(word);
@@ -112,12 +112,18 @@ void play()
 		printf("Chances:%d\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
 		printf("\t\t\tHint:%s\n\n",hint());
+		printf("Letters: ");
+		for(k=0;k<=l-1;k++)
+		printf("%c ",dis_letter[k]);
+		printf("\n");
 		hangman(chance);
 		printf("\n\n\t\t\t\t%s\n",guess);
 		check=0;
 		printf("\nEnter a letter:");
 		scanf(" %c",&w);
 		w=toupper(w);
+		dis_letter[l]=w;
+		l++;
 		for(i=0;i<=strlen(word)-1;i++)
 		{
 			if(word[i]==w)
@@ -129,6 +135,7 @@ void play()
 				printf("\nNext Level\n");
 				score=score+5;
 				level++;
+				l=0;
 				//n=1;
 				//break;
 				if(chance!=0)
