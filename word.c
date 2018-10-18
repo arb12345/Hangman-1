@@ -16,13 +16,14 @@ char* random_word();
 char* hint();
 void clears();
 void sleeps(int);
-void checkscore(int);
+void checkscore(int,float);
 void displayscore();
 
 struct g_score
 {
 	int hscore;
 	char name[20];
+	float t;
 };
 typedef struct g_score highscore;
 
@@ -35,7 +36,7 @@ int main()
 	clears();
 	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
-	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n");
+	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
 	sleeps(1000);	
 	printf("\n\n\n\n\n\n\n\t\t\t\tLoading...\n\n\t");
 	while(n>=0)
@@ -80,7 +81,9 @@ void play()
 {
 	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k;
 	char word[80],guess[80],w,displayguess[80],dis_letter[50];
+	clock_t time;
 	clears();
+	time = clock();
 	strcpy(word,random_word());							
     //strupr(word);
 	for(i=0;i<=strlen(word)-1;i++)
@@ -178,9 +181,11 @@ void play()
 			if(chance==0)				
 			{
 				clears();
-				printf("\n\n\n\n\n\t\t\tLast chance! Game over!!\n");
+				printf("\n\n\n\n\n\t\tGame over!!\n");
 				printf("\n\t\t\t\tYour Score:%d\n\n\n\n\n",score);
-				checkscore(score);
+				time=clock()-time;
+				float time_taken = ((float)time)/CLOCKS_PER_SEC;
+				checkscore(score,time_taken);
 				sleeps(2000);
 				clears();
 				n=1;
@@ -317,7 +322,7 @@ char* hint()
     return hintword;
 }
 
-void checkscore(int score)
+void checkscore(int score,float time_taken)
 {
 	char name[100];
 	FILE *fptr;
@@ -329,7 +334,7 @@ void checkscore(int score)
 	}
 	printf("Enter your name:\n");
 	scanf("%s",name);
-	fprintf(fptr,"\t\t\t%s\t\t%d\n", name,score);
+	fprintf(fptr,"\t\t\t%s\t\t%d\t\t%f\n", name,score,time_taken);
 	fclose(fptr);
 }
 
@@ -349,12 +354,12 @@ void displayscore()
         printf("Cannot open file \n"); 
         exit(0); 
     }
-    printf("\t\t\tName\t\tScore\n"); 
+    printf("\t\t\tName\t\tScore\t\tTime\n"); 
     c = fgetc(fptr); 
     while (c != EOF) 
     { 
        // printf ("%c", c);
-        fscanf(fptr,"\t\t\t%s\t\t%d",hs[i].name,&hs[i].hscore);
+        fscanf(fptr,"\t\t\t%s\t\t%d\t\t%f",hs[i].name,&hs[i].hscore,&hs[i].t);
         c = fgetc(fptr);
         i++;
         n++; 
@@ -373,11 +378,17 @@ void displayscore()
 		} 
 	}  
     for(i=0;i<=n-1;i++)  
-    printf("\t\t\t%s\t\t%d\n",hs[i].name,hs[i].hscore);
-    printf("\n\n\n1. Main menu\n");
+    printf("\t\t\t%s\t\t%d\t\t%0.2f\n",hs[i].name,hs[i].hscore,hs[i].t);
+    printf("\n\n\n1. Main menu\t\t\t\t\t\t\t\t2.Reset Score\n");
     scanf("%d",&a);
-    clears();
-    fclose(fptr);
+	fclose(fptr);
+    if(a==2)
+    {
+		fopen("score.txt","w");
+		fclose(fptr);
+		displayscore();
+	}
+    clears();   
 }
 
 void clears()
