@@ -104,7 +104,6 @@ void play()
         c = fgetc(fptr3);
     }
     fclose(fptr3);
-   printf("%d",diff_level);
 	for(i=0;i<=strlen(word)-1;i++)
 	{
 		if(i%(diff_level+1)==0)
