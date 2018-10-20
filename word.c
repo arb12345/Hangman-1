@@ -18,6 +18,7 @@ void clears();
 void sleeps(int);
 void checkscore(int,float);
 void displayscore();
+void difficulty();
 
 struct g_score
 {
@@ -31,18 +32,18 @@ int hint_line=0;
 
 int main()
 {
-	int n=60,choice=0;
+	int n=70,choice=0;
 	srand(time(0));
 	clears();
-	printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
-	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
-	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+	printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+	printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
 	sleeps(1000);	
-	printf("\n\n\n\n\n\n\n\t\t\t\tLoading...\n\n\t");
+	printf("\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\tLoading...\n\n\n\n\n\t\t\t\t\t");
 	while(n>=0)
 	{
 	printf("|");
-	sleeps(20);
+	sleeps(0);
 	n--;
     }
     printf(" 100%%\n\n\t");
@@ -51,10 +52,10 @@ int main()
     clears();
     do
 	{ 
-		printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
-		printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
-		printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n"); 
-		printf("\n\n\n\n\n\n\t\t\t\t1. PLAY\n\n\t\t\t\t2. HIGH SCORE\n\n\t\t\t\t3. EXIT\n\n\t\t\t\t"); 
+		printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+		printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+		printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
+		printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. PLAY\n\n\t\t\t\t\t\t\t\t\t2. DIFFICULTY\n\n\t\t\t\t\t\t\t\t\t3. HIGH SCORE\n\n\t\t\t\t\t\t\t\t\t4. EXIT\n\n\t\t\t\t"); 
 		scanf("%d",&choice);
 		switch(choice)
 		{
@@ -64,31 +65,49 @@ int main()
 				}break;
 			case 2:
 				{
-					displayscore();
+					difficulty();
 				}break;
 			case 3:
+				{
+					displayscore();
+				}break;
+			case 4:
 				{
 					clears();
 					exit(1);
 				}break;
 		} 
 	}
-	while(choice!=3);
+	while(choice!=4);
 	return 0;	
 }
 
 void play()
 {
-	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k;
-	char word[80],guess[80],w,displayguess[80],dis_letter[50];
+	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k,diff_level;
+	char word[80],guess[80],w,displayguess[80],dis_letter[50],c;
 	clock_t time;
 	clears();
 	time = clock();
 	strcpy(word,random_word());							
     //strupr(word);
+    
+    FILE *fptr3;
+	if ((fptr3 = fopen("difficulty.txt", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        diff_level=2;         
+    } 
+    while (c != EOF) 
+    { 
+        fscanf(fptr3,"%d",&diff_level);
+        c = fgetc(fptr3);
+    }
+    fclose(fptr3);
+   printf("%d",diff_level);
 	for(i=0;i<=strlen(word)-1;i++)
 	{
-		if(i%3==0)
+		if(i%(diff_level+1)==0)
 		{
 			guess[i]=word[i];
 			displayguess[i]=word[i];
@@ -110,19 +129,19 @@ void play()
 	displayguess[i]='\0';
 	while(n)
 	{
-		printf("\n\n\n\t\t\tGuess the word: %s\n\n",displayguess);
-		printf("\t\t\t\tLevel %d\n\n",level);
-		printf("Chances:%d\t\t\t\t\t\t\tScore:%d\n",chance,score);
+		printf("\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tGuess the word: %s\n\n",displayguess);
+		printf("\t\t\t\t\t\t\t\t\tLevel %d\n\n",level);
+		printf("\n\tChances:%d\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
-		printf("\t\t\tHint:%s\n\n",hint());
-		printf("Letters: ");
+		printf("\n\t\t\t\t\tHint:%s\n\n",hint());
+		printf("\tLetters: ");
 		for(k=0;k<=l-1;k++)
 		printf("%c ",dis_letter[k]);
-		printf("\n");
+		printf("\n\n\n");
 		hangman(chance);
-		printf("\n\n\t\t\t\t%s\n",guess);
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t%s\n",guess);
 		check=0;
-		printf("\nEnter a letter:");
+		printf("\n\n\n\n\t\t\t\t\t\t\t\tEnter a letter:");
 		scanf(" %c",&w);
 		w=toupper(w);
 		dis_letter[l]=w;
@@ -135,7 +154,7 @@ void play()
 			    check=1;
 			if (strcmp(word,guess) == 0)
 			{
-				printf("\nNext Level\n");
+				printf("\n\n\tNext Level\n");
 				score=score+5;
 				level++;
 				l=0;
@@ -144,10 +163,10 @@ void play()
 				if(chance!=0)
 				{
 					strcpy(word,random_word());					
-			/////////////////////////////////////
+			
 					for(i=0;i<=strlen(word)-1;i++)
 					{
-						if(i%3==0)
+						if(i%(diff_level+1)==0)
 						{
 							guess[i]=word[i];
 							displayguess[i]=word[i];
@@ -166,7 +185,7 @@ void play()
 					}
 				guess[i]='\0';
 				displayguess[i]='\0';
-	       ///////////////////////////////				
+	  			
 				}		
 			}
 			}
@@ -181,8 +200,8 @@ void play()
 			if(chance==0)				
 			{
 				clears();
-				printf("\n\n\n\n\n\t\tGame over!!\n");
-				printf("\n\t\t\t\tYour Score:%d\n\n\n\n\n",score);
+				printf("\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\tGame over!!\n");
+				printf("\n\t\t\t\t\t\t\t\t\tYour Score:%d\n\n\n\n\n",score);
 				time=clock()-time;
 				float time_taken = ((float)time)/CLOCKS_PER_SEC;
 				checkscore(score,time_taken);
@@ -204,66 +223,66 @@ void hangman(int c)
 	{
 	 case 6:
 	 {	
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|      \n");
-		printf("\t\t\t\t|       \n");
-		printf("\t\t\t\t|       \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|      \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	 }
 	 case 5:
 	 {
-		printf("\t\t\t\t|---O  \n");
-		printf("\t\t\t\t|  /    \n");
-		printf("\t\t\t\t|       \n");
-		printf("\t\t\t\t|      \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O  \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /    \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|      \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	 }
 	 case 4:
 	 {
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|  /|    \n");
-		printf("\t\t\t\t|        \n");
-		printf("\t\t\t\t|     \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /|    \n");
+		printf("\t\t\t\t\t\t\t\t\t|        \n");
+		printf("\t\t\t\t\t\t\t\t\t|     \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 		
 	 }
 	 case 3:
 	 {
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|  /|\\    \n");
-		printf("\t\t\t\t|        \n");
-		printf("\t\t\t\t|      \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /|\\    \n");
+		printf("\t\t\t\t\t\t\t\t\t|        \n");
+		printf("\t\t\t\t\t\t\t\t\t|      \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	}
 	case 2:
 	{
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|  /|\\    \n");
-		printf("\t\t\t\t|   |    \n");
-		printf("\t\t\t\t|      \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /|\\    \n");
+		printf("\t\t\t\t\t\t\t\t\t|   |    \n");
+		printf("\t\t\t\t\t\t\t\t\t|      \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	}
 	case 1:
 	{
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|  /|\\    \n");
-		printf("\t\t\t\t|   |    \n");
-		printf("\t\t\t\t|  /    \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /|\\    \n");
+		printf("\t\t\t\t\t\t\t\t\t|   |    \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /    \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	}
 	case 0:
 	{
-		printf("\t\t\t\t|---O   \n");
-		printf("\t\t\t\t|  /|\\    \n");
-		printf("\t\t\t\t|   |    \n");
-		printf("\t\t\t\t|  / \\   \n");
-		printf("\t\t\t\t|       \n");
+		printf("\t\t\t\t\t\t\t\t\t|---O   \n");
+		printf("\t\t\t\t\t\t\t\t\t|  /|\\    \n");
+		printf("\t\t\t\t\t\t\t\t\t|   |    \n");
+		printf("\t\t\t\t\t\t\t\t\t|  / \\   \n");
+		printf("\t\t\t\t\t\t\t\t\t|       \n");
 		break;
 	}		
 }
@@ -332,7 +351,7 @@ void checkscore(int score,float time_taken)
 		printf("Error!");
 		exit(1);
 	}
-	printf("Enter your name:\n");
+	printf("\tEnter your name:");
 	scanf("%s",name);
 	fprintf(fptr,"\t\t\t%s\t\t%d\t\t%f\n", name,score,time_taken);
 	fclose(fptr);
@@ -345,21 +364,21 @@ void displayscore()
 	clears();
 	FILE *fptr; 
     char c; 
-    printf("\n\n\n\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
-	printf("\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
-	printf("\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\| \n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+	printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+	printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
     fptr = fopen("score.txt", "r"); 
     if (fptr == NULL) 
     { 
         printf("Cannot open file \n"); 
         exit(0); 
     }
-    printf("\t\t\tName\t\tScore\t\tTime\n"); 
+    printf("\n\n\t\t\t\t\t\t\tName\t\tScore\t\tTime\n"); 
     c = fgetc(fptr); 
     while (c != EOF) 
     { 
        // printf ("%c", c);
-        fscanf(fptr,"\t\t\t%s\t\t%d\t\t%f",hs[i].name,&hs[i].hscore,&hs[i].t);
+        fscanf(fptr,"\t\t\t\t\t\t%s\t\t%d\t\t%f",hs[i].name,&hs[i].hscore,&hs[i].t);
         c = fgetc(fptr);
         i++;
         n++; 
@@ -378,8 +397,8 @@ void displayscore()
 		} 
 	}  
     for(i=0;i<=n-1;i++)  
-    printf("\t\t\t%s\t\t%d\t\t%0.2f\n",hs[i].name,hs[i].hscore,hs[i].t);
-    printf("\n\n\n1. Main menu\t\t\t\t\t\t\t\t2.Reset Score\n");
+    printf("\t\t\t\t\t\t\t%s\t\t%d\t\t%0.2f\n",hs[i].name,hs[i].hscore,hs[i].t);
+    printf("\n\n\n\t1. Main menu\t\t\t\t\t\t\t\t\t\t\t\t\t\t2.Reset Score\n\t");
     scanf("%d",&a);
 	fclose(fptr);
     if(a==2)
@@ -389,6 +408,31 @@ void displayscore()
 		displayscore();
 	}
     clears();   
+}
+
+void difficulty()
+{
+	int n;
+	clears();
+	FILE *fptr;
+	printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+	printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+	printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
+	printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. EASY\n\n\t\t\t\t\t\t\t\t\t2. MEDIUM\n\n\t\t\t\t\t\t\t\t\t3. HARD\n\n\t\t\t\t"); 
+	printf("4.Main menu");
+	scanf("%d",&n);
+	if(n!=4&&n<4)
+	{
+	fptr = fopen("difficulty.txt", "w");
+	if(fptr == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+	fprintf(fptr,"%d",n);
+	fclose(fptr);
+	}
+	clears();	
 }
 
 void clears()
