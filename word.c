@@ -43,7 +43,7 @@ int main()
 	while(n>=0)
 	{
 	printf("|");
-	sleeps(0);
+	sleeps(18);
 	n--;
     }
     printf(" 100%%\n\n\t");
@@ -84,7 +84,7 @@ int main()
 
 void play()
 {
-	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k,diff_level;
+	int i,chance=7,check=0,n=60,score=0,level=1,l=0,k,diff_level,quit;
 	char word[80],guess[80],w,displayguess[80],dis_letter[50],c;
 	clock_t time;
 	clears();
@@ -142,6 +142,21 @@ void play()
 		check=0;
 		printf("\n\n\n\n\t\t\t\t\t\t\t\tEnter a letter:");
 		scanf(" %c",&w);
+		if(w=='*')
+		{
+			clears();
+			printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
+			printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
+			printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
+			printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tAre you sure you want to quit?");
+			printf("\n\n\t\t\t\t\t\t\t1.Yes\t\t\t\t\t\t2.No");
+			scanf("%d",&quit);
+			if(quit==1)
+			{
+				clears();
+				return;
+			}
+		}
 		w=toupper(w);
 		dis_letter[l]=w;
 		l++;
@@ -412,13 +427,32 @@ void displayscore()
 void difficulty()
 {
 	int n;
+	char c;
 	clears();
 	FILE *fptr;
 	printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 	printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 	printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
-	printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. EASY\n\n\t\t\t\t\t\t\t\t\t2. MEDIUM\n\n\t\t\t\t\t\t\t\t\t3. HARD\n\n\t\t\t\t"); 
-	printf("4.Main menu");
+	
+	if ((fptr = fopen("difficulty.txt", "r")) == NULL)
+    {
+        n=2;         
+    } 
+    while (c != EOF) 
+    { 
+        fscanf(fptr,"%d",&n);
+        c = fgetc(fptr);
+    }
+    fclose(fptr);
+	if(n==1)
+	printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. EASY <-\n\n\t\t\t\t\t\t\t\t\t2. MEDIUM\n\n\t\t\t\t\t\t\t\t\t3. HARD\n\n\t\t\t\t");
+	else
+	if(n==2)
+	printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. EASY\n\n\t\t\t\t\t\t\t\t\t2. MEDIUM <-\n\n\t\t\t\t\t\t\t\t\t3. HARD\n\n\t\t\t\t");
+	else
+	if(n==3)
+	printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. EASY\n\n\t\t\t\t\t\t\t\t\t2. MEDIUM\n\n\t\t\t\t\t\t\t\t\t3. HARD <-\n\n\t\t\t\t");
+	printf("4.Main menu\n\n\t");
 	scanf("%d",&n);
 	if(n!=4&&n<4)
 	{
@@ -430,6 +464,7 @@ void difficulty()
 	}
 	fprintf(fptr,"%d",n);
 	fclose(fptr);
+	difficulty();
 	}
 	clears();	
 }
