@@ -32,7 +32,7 @@ int hint_line=0;
 
 int main()
 {
-	int n=70,choice=0;
+	int n=70,choice=0,q;
 	srand(time(0));
 	clears();
 	printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
@@ -74,11 +74,19 @@ int main()
 			case 4:
 				{
 					clears();
-					exit(1);
+					printf("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tAre you sure you want to quit?");
+					printf("\n\n\t\t\t\t\t\t\t1.Yes\t\t\t\t\t\t2.No\n\n\t\t\t\t\t\t\t\t\t\t");
+					scanf("%d",&q);
+					if(q==1)
+					{
+						clears();
+						exit(1);
+					}
+					clears();
 				}break;
 		} 
 	}
-	while(choice!=4);
+	while(choice!=0);
 	return 0;	
 }
 
@@ -369,6 +377,23 @@ void checkscore(int score,float time_taken)
 	scanf("%s",name);
 	fprintf(fptr,"\t\t\t%s\t\t%d\t\t%f\n", name,score,time_taken);
 	fclose(fptr);
+	/*fptr = fopen("score.txt", "r");
+	c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+		fscanf(fptr,"\t\t\t\t\t\t%s\t\t%d\t\t%f",cname,&hscore,&t);
+		c = fgetc(fptr);
+		if(hscore>=score)
+		{
+			che=0;
+			break;
+		}
+	}
+	clears();
+    if(che==1)
+		printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\tNew High Score");
+	scanf("%f",&t);
+    fclose(fptr);*/
 }
 
 void displayscore()
@@ -480,9 +505,9 @@ void clears()
 
 void sleeps(int x)
 {
-	#ifdef _WIN32
+	#ifdef _WIN32			//for windows
 	Sleep(x);
-	#elif __linux__
+	#elif __linux__			//for linux
 	sleep(x*0.001);
 	#endif
 }
