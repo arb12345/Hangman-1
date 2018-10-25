@@ -140,7 +140,7 @@ void play()
 		printf("\t\t\t\t\t\t\t\t\tLevel %d\n\n",level);
 		printf("\n\tChances:%d\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
-		printf("\n\t\t\t\t\tHint:%s\n\n",hint());
+		printf("\n\t\t\t\t\t\t\t\tHint: %s\n\n",hint());
 		printf("\tLetters: ");
 		for(k=0;k<=l-1;k++)
 		printf("%c ",dis_letter[k]);
@@ -314,7 +314,7 @@ char* random_word()
 {
 	int j=0,random_num=0;
 	char buffer[50],buffer1[50];
-	random_num = (rand() %15+0);
+	random_num = (rand() %49+0);
 	FILE *fptr;
 	hint_line=0;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
@@ -399,7 +399,7 @@ void checkscore(int score,float time_taken)
 void displayscore()
 {
 	highscore hs[11],temp;
-	int a,i=0,n=0,j;
+	int a,i=0,n=0,j,reset=0;
 	clears();
 	FILE *fptr; 
     char c; 
@@ -442,9 +442,16 @@ void displayscore()
 	fclose(fptr);
     if(a==2)
     {
-		fopen("score.txt","w");
-		fclose(fptr);
-		displayscore();
+		clears();
+		printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tAre you sure you want to reset score?");
+		printf("\n\n\t\t\t\t\t\t\t1.Yes\t\t\t\t\t\t2.No");
+		scanf("%d",&reset);
+        if(reset==1)
+		{
+			fopen("score.txt","w");
+			fclose(fptr);
+			displayscore();
+		}
 	}
     clears();   
 }
