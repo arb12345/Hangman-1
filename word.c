@@ -55,7 +55,7 @@ int main()
 		printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
 		printf("\t\t\t\t\t\t\t|--| /__\\ | \\ ||  _  | \\  / | /__\\ | \\ |\n");
 		printf("\t\t\t\t\t\t\t|  |/    \\|  \\||___| |  \\/  |/    \\|  \\|\n");
-		printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. PLAY\n\n\t\t\t\t\t\t\t\t\t2. DIFFICULTY\n\n\t\t\t\t\t\t\t\t\t3. HIGH SCORE\n\n\t\t\t\t\t\t\t\t\t4. EXIT\n\n\t\t\t\t"); 
+		printf("\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t1. PLAY\n\n\t\t\t\t\t\t\t\t\t2. SELECT DIFFICULTY\n\n\t\t\t\t\t\t\t\t\t3. HIGH SCORE\n\n\t\t\t\t\t\t\t\t\t4. EXIT\n\n\t\t\t\t"); 
 		scanf("%d",&choice);
 		switch(choice)
 		{
@@ -97,11 +97,9 @@ void play()
 	clock_t time;
 	clears();
 	time = clock();
-	strcpy(word,random_word());							
-    //strupr(word);
-    
+	strcpy(word,random_word());					
     FILE *fptr3;
-	if ((fptr3 = fopen("difficulty.txt", "r")) == NULL)
+	if ((fptr3 = fopen("difficulty.txt", "r")) == NULL)				//if file does not exist
     {
         printf("Error! opening file");
         diff_level=2;         
@@ -143,14 +141,14 @@ void play()
 		printf("\n\t\t\t\t\t\t\t\tHint: %s\n\n",hint());
 		printf("\tLetters: ");
 		for(k=0;k<=l-1;k++)
-		printf("%c ",dis_letter[k]);
+		printf("%c ",dis_letter[k]);							//display used letters
 		printf("\n\n\n");
 		hangman(chance);
 		printf("\n\n\n\t\t\t\t\t\t\t\t\t%s\n",guess);
 		check=0;
 		printf("\n\n\n\n\t\t\t\t\t\t\t\tEnter a letter:");
-		scanf(" %c",&w);
-		if(w=='*')
+		scanf(" %c",&w);										//accept character from user
+		if(w=='*')													
 		{
 			clears();
 			printf("\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t|  |  /\\  |\\  | ---  |\\    /|  /\\  |\\  |\n");
@@ -165,23 +163,21 @@ void play()
 				return;
 			}
 		}
-		w=toupper(w);
+		w=toupper(w);										//convert character to upper case
 		dis_letter[l]=w;
 		l++;
 		for(i=0;i<=strlen(word)-1;i++)
 		{
 			if(word[i]==w)
 			{
-				guess[i]=w;
+				guess[i]=w;										//check if character is present in word
 			    check=1;
 			if (strcmp(word,guess) == 0)
 			{
 				printf("\n\n\tNext Level\n");
-				score=score+5;
+				score=score+5;									// increase the score by 5 and go to next level
 				level++;
 				l=0;
-				//n=1;
-				//break;
 				if(chance!=0)
 				{
 					strcpy(word,random_word());					
@@ -214,9 +210,8 @@ void play()
 		}
 		if(check==0)
 		{
-			chance=chance-1;
-			//printf("\nWRONG\n");
-			score--;
+			chance=chance-1;							//decrease chance by if charcter is not present in word
+			score--;									////decrease score by if charcter is not present in word
 			if(score<0)
 			score=0;
 			if(chance==0)				
@@ -225,7 +220,7 @@ void play()
 				printf("\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\tGame over!!\n");
 				printf("\n\t\t\t\t\t\t\t\t\tYour Score:%d\n\n\n\n\n",score);
 				time=clock()-time;
-				float time_taken = ((float)time)/CLOCKS_PER_SEC;
+				float time_taken = ((float)time)/CLOCKS_PER_SEC;		//calculate time
 				checkscore(score,time_taken);
 				sleeps(2000);
 				clears();
@@ -239,7 +234,7 @@ void play()
     }
 }
 
-void hangman(int c)
+void hangman(int c)					//Display hangman
 {
 	switch(c)
 	{
@@ -310,7 +305,7 @@ void hangman(int c)
 }
 }
 
-char* random_word()
+char* random_word()								//function to read random word from file
 {
 	int j=0,random_num=0;
 	char buffer[50],buffer1[50];
@@ -334,11 +329,10 @@ char* random_word()
     } 
 	char *word=buffer1;
     fclose(fptr);
-    //printf("%s",hint());
     return word;	
 }
 
-char* hint()
+char* hint()								//function to display hint
 {
 	int j=0;
 	char hint[50],hint1[50];
@@ -377,26 +371,9 @@ void checkscore(int score,float time_taken)
 	scanf("%s",name);
 	fprintf(fptr,"\t\t\t%s\t\t%d\t\t%f\n", name,score,time_taken);
 	fclose(fptr);
-	/*fptr = fopen("score.txt", "r");
-	c = fgetc(fptr); 
-    while (c != EOF) 
-    { 
-		fscanf(fptr,"\t\t\t\t\t\t%s\t\t%d\t\t%f",cname,&hscore,&t);
-		c = fgetc(fptr);
-		if(hscore>=score)
-		{
-			che=0;
-			break;
-		}
-	}
-	clears();
-    if(che==1)
-		printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\tNew High Score");
-	scanf("%f",&t);
-    fclose(fptr);*/
 }
 
-void displayscore()
+void displayscore()								//function to displayy score
 {
 	highscore hs[11],temp;
 	int a,i=0,n=0,j,reset=0;
@@ -416,14 +393,13 @@ void displayscore()
     c = fgetc(fptr); 
     while (c != EOF) 
     { 
-       // printf ("%c", c);
         fscanf(fptr,"\t\t\t\t\t\t%s\t\t%d\t\t%f",hs[i].name,&hs[i].hscore,&hs[i].t);
         c = fgetc(fptr);
         i++;
         n++; 
     }
     n--;  
-    for(i=0;i<n-1;i++)      
+    for(i=0;i<n-1;i++)      								//display score in ascending order
 	{ 
 		for(j=0;j<n-1-i;j++) 
 		{
@@ -448,7 +424,7 @@ void displayscore()
 		scanf("%d",&reset);
         if(reset==1)
 		{
-			fopen("score.txt","w");
+			fopen("score.txt","w");	
 			fclose(fptr);
 			displayscore();
 		}
@@ -456,7 +432,7 @@ void displayscore()
     clears();   
 }
 
-void difficulty()
+void difficulty()						//function to select difficulty level
 {
 	int n;
 	char c;
@@ -501,11 +477,11 @@ void difficulty()
 	clears();	
 }
 
-void clears()
+void clears()				//clear screen
 {
-	#ifdef _WIN32
+	#ifdef _WIN32			//for windows
 	system("cls");
-	#elif __linux__
+	#elif __linux__			//for linux
 	system("clear");
 	#endif
 }
