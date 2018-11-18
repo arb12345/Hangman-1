@@ -139,12 +139,18 @@ void play()
 		printf("\n\tChances:%d\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tScore:%d\n",chance,score);
 		printf("\n");
 		printf("\n\t\t\t\t\t\t\t\tHint: %s\n\n",hint());
-		printf("\tLetters: ");
+		printf("\tGuessed Letters: ");
 		for(k=0;k<=l-1;k++)
 		printf("%c ",dis_letter[k]);							//display used letters
 		printf("\n\n\n");
 		hangman(chance);
-		printf("\n\n\n\t\t\t\t\t\t\t\t\t%s\n",guess);
+		//printf("\n\n\n\t\t\t\t\t\t\t\t\t%s\n",guess);
+		printf("\n\n\n\t\t\t\t\t\t\t\t\t");
+		for(i=0;i<=strlen(guess)-1;i++)
+		{
+			printf(" %c",guess[i]);
+		}
+		printf("\n");
 		check=0;
 		printf("\n\n\n\n\t\t\t\t\t\t\t\tEnter a letter:");
 		scanf(" %c",&w);										//accept character from user
@@ -314,7 +320,7 @@ char* random_word()								//function to read random word from file
 	hint_line=0;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
     {
-        printf("Error! opening file");
+        printf("Error! opening file");						//error if file does not exists
         exit(1);         
     } 
     while (fgets(buffer, sizeof(buffer), fptr)) 
@@ -359,7 +365,9 @@ char* hint()								//function to display hint
 
 void checkscore(int score,float time_taken)
 {
-	char name[100];
+	highscore hs[11],temp;
+	int i=0,j,n=0;
+	char name[100],c;
 	FILE *fptr;
 	fptr = fopen("score.txt", "a+");
 	if(fptr == NULL)
@@ -367,13 +375,47 @@ void checkscore(int score,float time_taken)
 		printf("Error!");
 		exit(1);
 	}
-	printf("\tEnter your name:");
+	printf("\tEnter your name:");						//accept user name
 	scanf("%s",name);
 	fprintf(fptr,"\t\t\t%s\t\t%d\t\t%f\n", name,score,time_taken);
 	fclose(fptr);
+	
+	fptr = fopen("score.txt", "r"); 
+    if (fptr == NULL) 
+    { 
+        printf("Cannot open file \n"); 					//error if file does not exists
+        exit(0); 
+    }
+    c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+        fscanf(fptr,"\t\t\t\t\t\t%s\t\t%d\t\t%f",hs[i].name,&hs[i].hscore,&hs[i].t);
+        c = fgetc(fptr);
+        i++;
+        n++; 
+    }
+    n--;  
+    for(i=0;i<n-1;i++)      								//display score in ascending order
+	{ 
+		for(j=0;j<n-1-i;j++) 
+		{
+			if(hs[j].hscore< hs[j+1].hscore)
+			{
+				temp=hs[j];       
+				hs[j]=hs[j+1];
+				hs[j+1]=temp;
+			}
+		} 
+	}
+	//printf("%d",hs[0].hscore);
+	if(score==hs[0].hscore)
+	{
+		printf("\n\n\n\t\t\t\t\t\t\t\t\tNEW HIGH SCORE");
+	}
+	fclose(fptr);
 }
 
-void displayscore()								//function to displayy score
+void displayscore()								//function to display score
 {
 	highscore hs[11],temp;
 	int a,i=0,n=0,j,reset=0;
@@ -386,7 +428,7 @@ void displayscore()								//function to displayy score
     fptr = fopen("score.txt", "r"); 
     if (fptr == NULL) 
     { 
-        printf("Cannot open file \n"); 
+        printf("Cannot open file \n"); 					//error if file does not exists
         exit(0); 
     }
     printf("\n\n\t\t\t\t\t\t\tName\t\tScore\t\tTime\n"); 
@@ -412,7 +454,7 @@ void displayscore()								//function to displayy score
 		} 
 	}  
     for(i=0;i<=n-1;i++)  
-    printf("\t\t\t\t\t\t\t%s\t\t%d\t\t%0.2f\n",hs[i].name,hs[i].hscore,hs[i].t);
+    printf("\t\t\t\t\t\t\t%s\t\t%d\t\t%0.2f\n",hs[i].name,hs[i].hscore,hs[i].t/60); 		//display score
     printf("\n\n\n\t1. Main menu\t\t\t\t\t\t\t\t\t\t\t\t\t\t2.Reset Score\n\t");
     scanf("%d",&a);
 	fclose(fptr);
