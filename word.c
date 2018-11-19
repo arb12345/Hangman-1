@@ -19,6 +19,7 @@ void sleeps(int);
 void checkscore(int,float);
 void displayscore();
 void difficulty();
+void displaynewhigh();
 
 struct g_score
 {
@@ -411,6 +412,9 @@ void checkscore(int score,float time_taken)
 	if(score==hs[0].hscore)
 	{
 		printf("\n\n\n\t\t\t\t\t\t\t\t\tNEW HIGH SCORE");
+		clears();
+		displaynewhigh();
+		clears();
 	}
 	fclose(fptr);
 }
@@ -517,6 +521,30 @@ void difficulty()						//function to select difficulty level
 	difficulty();
 	}
 	clears();	
+}
+
+void displaynewhigh()
+{
+	int n=20;
+	clears();
+	while(n>=0)
+	{
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n\n");
+	printf("\t\t\t\t\t\t\t  |  |    ___        ---  ____  ___   ___   ___  \n");
+	printf("\t\t\t\t\t\t\t  |--| | |  _ |__|  |___ |     |   | |___| |___   \n");
+	printf("\t\t\t\t\t\t\t  |  | | |___||  |   ___||___  |___| |\\    |___\n");
+	printf("\n\t\t\t\t\t\t_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n");
+	sleeps(120);
+	clears();
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n\n");
+	printf("\t\t\t\t\t\t\t  |  |    ___        ---  ____  ___   ___   ___  \n");
+	printf("\t\t\t\t\t\t\t  |--| | |  _ |__|  |___ |     |   | |___| |___ \n");
+	printf("\t\t\t\t\t\t\t  |  | | |___||  |   ___||___  |___| |\\    |___  \n");
+	printf("\n\t\t\t\t\t\t-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n");
+	sleeps(120);
+	clears();
+	n--;
+}
 }
 
 void clears()				//clear screen
