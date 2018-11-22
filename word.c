@@ -316,7 +316,7 @@ char* random_word()								//function to read random word from file
 {
 	int j=0,random_num=0;
 	char buffer[50],buffer1[50];
-	random_num = (rand() %49+0);
+	random_num = (rand() %50+0);
 	FILE *fptr;
 	hint_line=0;
 	if ((fptr = fopen("hangmanword.txt", "r")) == NULL)
